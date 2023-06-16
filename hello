@@ -1,1 +1,13 @@
-hello 
+
+#### How many total crimes were reported in 2021?
+
+````sql
+SELECT count(crime_id) AS "total reported crimes"
+FROM crimes;
+````
+
+**Results:**
+
+Total Reported Crimes|
+---------------------|
+202536|
