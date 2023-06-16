@@ -3,7 +3,7 @@
 
 **Collaborators**: Aryana Sharma, Arshiya Mahajan
 
-#### What were the top 5 highest-rated movies from 2006-16?
+#### Ques 1. What were the top 5 highest-rated movies from 2006-2016?
 
 ````sql
 SELECT Title, Rating FROM movies.movie_ratings
@@ -22,7 +22,7 @@ LIMIT 5;
 | The Intouchables |    8.6 |
 
 
-#### Do the Directors and the Cast have an impact on movie ratings?
+#### Ques 2. Do the Directors and the Cast have an impact on movie ratings?
 ````sql
 SELECT Director, Actors, AVG(Rating) AS average_rating
 FROM movies.movie_ratings
@@ -59,7 +59,7 @@ Conclusion: In this query, we retrieve the director, cast, and average ratings f
 
 By comparing the average rating of movies associated with a specific director and cast to the overall average rating, this query helps identify instances where a director and cast combination tends to yield higher-rated movies, suggesting an impact on the movie rating.
 
-#### Do votes and ratings have a correlation?
+#### Ques 3. Do votes and ratings have a correlation?
 
 ````sql
 SELECT
@@ -80,7 +80,7 @@ Conclusion: A value close to 1 indicates a strong positive correlation, a value 
 
 Hence, it can be seen that there exists minimal positive correlation between votes and ratings.
 
-#### Retrieve the directors whose movies have consistently high ratings (all movies have a rating above 8).
+#### Ques 4. Retrieve the directors whose movies have consistently high ratings (all movies have a rating above 8).
 
 ````sql
 SELECT Director
@@ -114,9 +114,9 @@ HAVING MIN(Rating) > 8;
 | Chan-wook Park                   |   |   |
 | Makoto Shinkai                   |   |   |
 
-Conclusion: We can see that Christopher Nolan, Florian Henckel von Donnersmarck, Aamir Khan, Sean Penn, Juan José Campanella are among the highest rating movies of all times.
+Conclusion: We can see that Christopher Nolan, Florian Henckel von Donnersmarck, Aamir Khan, Sean Penn, Juan José Campanella are among the directors who directed the highest rating movies of all times.
 
-#### Retrieve the movies that have a rating higher than the average rating of all movies in the same genre and year.
+#### Ques 5. Retrieve the movies that have a rating higher than the average rating of all movies in the same genre and year.
 
 ````sql
 SELECT Title, Genre, Year, Rating
@@ -556,5 +556,217 @@ WHERE Rating > (
 | Mr. Church                                                    | Comedy,Drama               | 2016 |    7.7 |   |
 |                                                               |                            |      |        |   |
 
+#### Ques 6. What is the most common genre combinations in movies?
 
+````sql
+SELECT
+Genre,
+COUNT(*) AS frequency
+FROM (
+SELECT
+ARRAY_TO_STRING(ARRAY_AGG(DISTINCT Genre ORDER BY Genre), ',') AS Genre
+FROM movies.movie_ratings
+GROUP BY Title
+) subquery
+GROUP BY Genre
+ORDER BY frequency DESC;
+
+````
+
+**Results:**
+
+| Genre                                        | frequency |   |   |   |
+|----------------------------------------------|-----------|---|---|---|
+| Action,Adventure,Sci-Fi                      |        50 |   |   |   |
+| Comedy,Drama,Romance                         |        30 |   |   |   |
+| Drama                                        |        29 |   |   |   |
+| Drama,Romance                                |        27 |   |   |   |
+| Animation,Adventure,Comedy                   |        26 |   |   |   |
+| Comedy                                       |        26 |   |   |   |
+| Action,Adventure,Fantasy                     |        25 |   |   |   |
+| Comedy,Drama                                 |        24 |   |   |   |
+| Comedy,Romance                               |        22 |   |   |   |
+| Crime,Drama,Thriller                         |        18 |   |   |   |
+| Crime,Drama,Mystery                          |        18 |   |   |   |
+| Action,Adventure,Drama                       |        17 |   |   |   |
+| Action,Crime,Drama                           |        16 |   |   |   |
+| Adventure,Family,Fantasy                     |        14 |   |   |   |
+| Action,Adventure,Comedy                      |        14 |   |   |   |
+| Drama,Thriller                               |        12 |   |   |   |
+| Biography,Drama,History                      |        12 |   |   |   |
+| Action,Comedy,Crime                          |        12 |   |   |   |
+| Action,Crime,Thriller                        |        11 |   |   |   |
+| Action,Adventure,Thriller                    |        11 |   |   |   |
+| Biography,Drama                              |        11 |   |   |   |
+| Horror,Thriller                              |        11 |   |   |   |
+| Adventure,Comedy,Drama                       |         8 |   |   |   |
+| Biography,Crime,Drama                        |         8 |   |   |   |
+| Animation,Action,Adventure                   |         8 |   |   |   |
+| Action,Thriller                              |         8 |   |   |   |
+| Crime,Drama                                  |         8 |   |   |   |
+| Horror                                       |         7 |   |   |   |
+| Horror,Mystery,Thriller                      |         7 |   |   |   |
+| Biography,Drama,Sport                        |         7 |   |   |   |
+| Action,Adventure,Crime                       |         6 |   |   |   |
+| Mystery,Thriller                             |         6 |   |   |   |
+| Horror,Mystery                               |         6 |   |   |   |
+| Action,Sci-Fi,Thriller                       |         6 |   |   |   |
+| Comedy,Crime,Drama                           |         6 |   |   |   |
+| Action,Biography,Drama                       |         6 |   |   |   |
+| Action,Drama,Thriller                        |         6 |   |   |   |
+| Biography,Comedy,Drama                       |         6 |   |   |   |
+| Animation,Comedy,Family                      |         5 |   |   |   |
+| Drama,Mystery,Sci-Fi                         |         5 |   |   |   |
+| Drama,Mystery,Romance                        |         5 |   |   |   |
+| Drama,Horror,Sci-Fi                          |         5 |   |   |   |
+| Action,Comedy                                |         5 |   |   |   |
+| Drama,Mystery,Thriller                       |         5 |   |   |   |
+| Adventure,Drama,Fantasy                      |         5 |   |   |   |
+| Comedy,Family                                |         5 |   |   |   |
+| Comedy,Crime                                 |         5 |   |   |   |
+| Action,Adventure,Mystery                     |         5 |   |   |   |
+| Drama,Fantasy,Horror                         |         5 |   |   |   |
+| Adventure,Biography,Drama                    |         4 |   |   |   |
+| Action,Horror,Sci-Fi                         |         4 |   |   |   |
+| Adventure,Drama,Family                       |         4 |   |   |   |
+| Drama,Fantasy,Romance                        |         4 |   |   |   |
+| Drama,History,Thriller                       |         4 |   |   |   |
+| Drama,Horror                                 |         4 |   |   |   |
+| Comedy,Drama,Music                           |         4 |   |   |   |
+| Drama,Romance,Sci-Fi                         |         4 |   |   |   |
+| Biography,Drama,Romance                      |         4 |   |   |   |
+| Adventure,Drama,Thriller                     |         3 |   |   |   |
+| Drama,Sci-Fi,Thriller                        |         3 |   |   |   |
+| Drama,Sport                                  |         3 |   |   |   |
+| Drama,Music                                  |         3 |   |   |   |
+| Adventure,Sci-Fi,Thriller                    |         3 |   |   |   |
+| Action,Mystery,Thriller                      |         3 |   |   |   |
+| Action,Adventure                             |         3 |   |   |   |
+| Comedy,Drama,Family                          |         3 |   |   |   |
+| Action,Comedy,Fantasy                        |         3 |   |   |   |
+| Crime,Horror,Thriller                        |         3 |   |   |   |
+| Action,Crime,Mystery                         |         3 |   |   |   |
+| Action,Fantasy,Horror                        |         3 |   |   |   |
+| Drama,Horror,Mystery                         |         3 |   |   |   |
+| Action,Drama,Fantasy                         |         3 |   |   |   |
+| Mystery,Sci-Fi,Thriller                      |         3 |   |   |   |
+| Action,Drama,Sci-Fi                          |         3 |   |   |   |
+| Adventure,Fantasy                            |         3 |   |   |   |
+| Biography,Drama,Thriller                     |         3 |   |   |   |
+| Action,Adventure,Family                      |         3 |   |   |   |
+| Drama,Horror,Thriller                        |         3 |   |   |   |
+| Action,Drama,History                         |         3 |   |   |   |
+| Drama,Sci-Fi                                 |         2 |   |   |   |
+| Adventure,Comedy,Sci-Fi                      |         2 |   |   |   |
+| Fantasy,Horror                               |         2 |   |   |   |
+| Crime,Drama,History                          |         2 |   |   |   |
+| Drama,War                                    |         2 |   |   |   |
+| Action,Drama,Sport                           |         2 |   |   |   |
+| Adventure,Drama,Romance                      |         2 |   |   |   |
+| Action,Drama,Romance                         |         2 |   |   |   |
+| Drama,Music,Romance                          |         2 |   |   |   |
+| Comedy,Horror                                |         2 |   |   |   |
+| Comedy,Horror,Thriller                       |         2 |   |   |   |
+| Action,Adventure,Horror                      |         2 |   |   |   |
+| Action,Drama,Family                          |         2 |   |   |   |
+| Drama,Fantasy                                |         2 |   |   |   |
+| Adventure,Mystery,Sci-Fi                     |         2 |   |   |   |
+| Comedy,Fantasy                               |         2 |   |   |   |
+| Action,Comedy,Romance                        |         2 |   |   |   |
+| Action,Sci-Fi                                |         2 |   |   |   |
+| Comedy,Fantasy,Horror                        |         2 |   |   |   |
+| Horror,Sci-Fi,Thriller                       |         2 |   |   |   |
+| Drama,Romance,Thriller                       |         2 |   |   |   |
+| Action,Mystery,Sci-Fi                        |         2 |   |   |   |
+| Adventure,Drama,Sci-Fi                       |         2 |   |   |   |
+| Adventure,Comedy,Family                      |         2 |   |   |   |
+| Comedy,Music                                 |         2 |   |   |   |
+| Adventure,Comedy,Romance                     |         2 |   |   |   |
+| Action,Adventure,Biography                   |         2 |   |   |   |
+| Crime,Drama,Music                            |         1 |   |   |   |
+| Comedy,Horror,Sci-Fi                         |         1 |   |   |   |
+| Action,Adventure,Romance,Comedy,Drama,Horror |         1 |   |   |   |
+| Crime,Drama,Fantasy                          |         1 |   |   |   |
+| Drama,Fantasy,Mystery                        |         1 |   |   |   |
+| Action,Comedy,Sport                          |         1 |   |   |   |
+| Drama,Fantasy,War                            |         1 |   |   |   |
+| Comedy,Romance,Sport                         |         1 |   |   |   |
+| Action,Fantasy,War                           |         1 |   |   |   |
+| Drama,Family,Music                           |         1 |   |   |   |
+| Drama,History                                |         1 |   |   |   |
+| Crime,Thriller                               |         1 |   |   |   |
+| Drama,Horror,Musical                         |         1 |   |   |   |
+| Drama,Fantasy,Musical                        |         1 |   |   |   |
+| Action,Comedy,Mystery                        |         1 |   |   |   |
+| Action,Fantasy,Thriller                      |         1 |   |   |   |
+| Sci-Fi,Thriller                              |         1 |   |   |   |
+| Biography,Drama,Mystery                      |         1 |   |   |   |
+| Action,Thriller,War                          |         1 |   |   |   |
+| Comedy,Family,Musical                        |         1 |   |   |   |
+| Action,Crime,Fantasy                         |         1 |   |   |   |
+| Action,Horror,Mystery                        |         1 |   |   |   |
+| Adventure,Fantasy,Mystery                    |         1 |   |   |   |
+| Action,Drama,Mystery                         |         1 |   |   |   |
+| Adventure,Drama,War                          |         1 |   |   |   |
+| Drama,Fantasy,Thriller                       |         1 |   |   |   |
+| Adventure,Comedy,Horror                      |         1 |   |   |   |
+| Animation,Family,Fantasy                     |         1 |   |   |   |
+| Animation,Action,Comedy                      |         1 |   |   |   |
+| Adventure,Drama,Western                      |         1 |   |   |   |
+| Drama,Mystery,War                            |         1 |   |   |   |
+| Mystery,Romance,Sci-Fi                       |         1 |   |   |   |
+| Action,Adventure,Romance                     |         1 |   |   |   |
+| Adventure,Comedy,Fantasy                     |         1 |   |   |   |
+| Action,Fantasy                               |         1 |   |   |   |
+| Comedy,Fantasy,Romance                       |         1 |   |   |   |
+| Drama,Musical,Romance                        |         1 |   |   |   |
+| Comedy,Drama,Musical                         |         1 |   |   |   |
+| Comedy,Music,Romance                         |         1 |   |   |   |
+| Drama,Western                                |         1 |   |   |   |
+| Action,Comedy,Sci-Fi                         |         1 |   |   |   |
+| Comedy,Crime,Thriller                        |         1 |   |   |   |
+| Crime,Mystery,Thriller                       |         1 |   |   |   |
+| Comedy,Drama,Fantasy                         |         1 |   |   |   |
+| Biography,Comedy,Crime                       |         1 |   |   |   |
+| Adventure,Horror                             |         1 |   |   |   |
+| Comedy,Horror,Romance                        |         1 |   |   |   |
+| Mystery,Romance,Thriller                     |         1 |   |   |   |
+| Drama,Fantasy,Music                          |         1 |   |   |   |
+| Comedy,Drama,Thriller                        |         1 |   |   |   |
+| Comedy,Romance,Western                       |         1 |   |   |   |
+| Action,Drama,War                             |         1 |   |   |   |
+| Comedy,Drama,Horror                          |         1 |   |   |   |
+| Action,Crime,Sci-Fi                          |         1 |   |   |   |
+| Thriller                                     |         1 |   |   |   |
+| Drama,Family,Fantasy                         |         1 |   |   |   |
+| Action,Crime,Sport                           |         1 |   |   |   |
+| Action,Comedy,Horror                         |         1 |   |   |   |
+| Adventure,Family                             |         1 |   |   |   |
+| Drama,Thriller,War                           |         1 |   |   |   |
+| Action,Comedy,Family                         |         1 |   |   |   |
+| Adventure,Comedy                             |         1 |   |   |   |
+| Adventure,Drama,Horror                       |         1 |   |   |   |
+| Sci-Fi                                       |         1 |   |   |   |
+| Comedy,Family,Romance                        |         1 |   |   |   |
+| Biography,Drama,Family                       |         1 |   |   |   |
+| Action,Drama,Horror                          |         1 |   |   |   |
+| Drama,History,War                            |         1 |   |   |   |
+| Comedy,Family,Fantasy                        |         1 |   |   |   |
+| Horror,Mystery,Sci-Fi                        |         1 |   |   |   |
+| Action,Horror,Romance                        |         1 |   |   |   |
+| Action,Horror,Thriller                       |         1 |   |   |   |
+| Comedy,Mystery                               |         1 |   |   |   |
+| Adventure,Drama,History                      |         1 |   |   |   |
+| Animation,Comedy,Drama                       |         1 |   |   |   |
+| Animation,Drama,Fantasy                      |         1 |   |   |   |
+| Adventure                                    |         1 |   |   |   |
+| Adventure,Crime,Mystery                      |         1 |   |   |   |
+| Animation,Fantasy                            |         1 |   |   |   |
+| Action                                       |         1 |   |   |   |
+| Action,Comedy,Drama                          |         1 |   |   |   |
+| Action,Adventure,Western                     |         1 |   |   |   |
+| Animation,Adventure,Family                   |         1 |   |   |   |
+| Biography,History,Thriller                   |         1 |   |   |   |
+
+Conclusion: Action,Adventure,Sci-Fi is the most famous combination of genres throughput 2006-2016.
 
